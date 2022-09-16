@@ -157,8 +157,51 @@ namespace lab1_JGM
                     portSerieESP.Open();
                 }
 
-                portSerieESP.WriteLine(CmdTextBox.Text);
-                portSerieESP.Close();
+                if (CmdTextBox.Text == "random")
+                {
+                    var random = new Random();
+                    string commandeRandom = "";
+
+                    int volts = random.Next(0, 16);
+                    int temperature = random.Next(-50, 50);
+                    int temperature1 = random.Next(-50, 50);
+                    int temperature2 = random.Next(-50, 50);
+                    int temperature3 = random.Next(-50, 50);
+                    int humidity = random.Next(0, 100);
+                    int pression = random.Next(90, 110);
+
+                    int typenumber = random.Next(0, 4);
+                    switch (typenumber)
+                    {
+                        case 0:
+                            // code for ADC
+                            commandeRandom = "fur {\"type\":\"ADC\",\"volts\":" + volts.ToString() + ",\"ts\":\"\"}";
+                            break;
+                        case 1:
+                            // code for DHT22
+                            commandeRandom = "fur {\"type\":\"DHT22\",\"T\":" + temperature.ToString() + ",\"HR\":" + humidity.ToString() + ",\"ts\":\"\"}";
+                            break;
+                        case 2:
+                            // code for BME280
+                            commandeRandom = "fur {\"type\":\"BME280\",\"Temperature\":" + temperature.ToString() + ",\"Pression\":" + pression.ToString() + ",\"Humidity\":" + humidity.ToString() + ",\"ts\":\"\"}";
+                            break;
+                        case 3:
+                            // code for DS1820
+                            commandeRandom = "fur {\"type\":\"DS1820\",\"T\":[" + temperature.ToString() + "," + temperature1.ToString() + "," + temperature2.ToString() + "," + temperature3.ToString() + "],\"ts\":\"\"}";
+                            break;
+                        default:
+                            // code block
+                            break;
+                    }
+
+                    portSerieESP.WriteLine(commandeRandom);
+                    portSerieESP.Close();
+                }
+                else
+                {
+                    portSerieESP.WriteLine(CmdTextBox.Text);
+                    portSerieESP.Close();
+                }
             }
             else
             {
